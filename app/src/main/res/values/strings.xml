@@ -9,10 +9,10 @@
     <string name="vs_text">V.S.</string>
     <string name="computer_text">Computer</string>
     <string name="player_text">You</string>
-    <string name="action_settings">Settings</string>
+    <string name="game_history">Go to history</string>
 
     // Game History
     <string name="computerWin_text">Computer wins!</string>
     <string name="playerWin_text">You win!</string>
-    <string name="history_settings">Go to Game History</string>
+    <string name="delete_history">Delete game history</string>
 </resources>
