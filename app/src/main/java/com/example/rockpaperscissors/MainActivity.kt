@@ -32,45 +32,44 @@ class MainActivity : AppCompatActivity() {
 
         when (button) {
             ibRock -> {
-                // The 0th in the array.
-                ivYou.setImageResource(R.drawable.rock)
+                // Rock
+                ivYou.setImageResource(IMAGES_LIST[0])
                 ivComputer.setImageResource(IMAGES_LIST[random.nextInt(IMAGES_LIST.size)])
-                checkResult(Choice(R.drawable.rock, IMAGES_LIST[random.nextInt(IMAGES_LIST.size)]))
+                checkResult(Choice(IMAGES_LIST[0], IMAGES_LIST[random.nextInt(IMAGES_LIST.size)]))
             }
             ibPaper -> {
-                // The 1st in the array.
-                ivYou.setImageResource(R.drawable.paper)
+                // Paper
+                ivYou.setImageResource(IMAGES_LIST[1])
                 ivComputer.setImageResource(IMAGES_LIST[random.nextInt(IMAGES_LIST.size)])
-                checkResult(Choice(R.drawable.paper, IMAGES_LIST[random.nextInt(IMAGES_LIST.size)]))
+                checkResult(Choice(IMAGES_LIST[1], IMAGES_LIST[random.nextInt(IMAGES_LIST.size)]))
             }
             ibScissors -> {
-                // The 2nd in the array.
-                ivYou.setImageResource(R.drawable.scissors)
+                // Scissors
+                ivYou.setImageResource(IMAGES_LIST[2])
                 ivComputer.setImageResource(IMAGES_LIST[random.nextInt(IMAGES_LIST.size)])
-                checkResult(Choice(R.drawable.scissors, IMAGES_LIST[random.nextInt(IMAGES_LIST.size)]))
+                checkResult(Choice(IMAGES_LIST[2], IMAGES_LIST[random.nextInt(IMAGES_LIST.size)]))
             }
-            
         }
     }
 
-    private fun checkResult(input : Choice) : Outcome{
+    private fun checkResult(input : Choice){
 
         var statistics = Outcome(0, 0, 0)
 
         // Same input.
         if (input.playerChoice == input.computerChoice) {
             statistics.draw++
-        } else if ((input.playerChoice == 0 && input.computerChoice == 1) &&             // Rock vs. Paper.
-                   (input.playerChoice == 1 && input.computerChoice == 2) &&             // Paper vs. Scissors.
+        } else if ((input.playerChoice == 0 && input.computerChoice == 1) ||             // Rock vs. Paper.
+                   (input.playerChoice == 1 && input.computerChoice == 2) ||             // Paper vs. Scissors.
                    (input.playerChoice == 2 && input.computerChoice == 0)) {             // Scissors vs. Rock.
             statistics.lose++
-        } else if ((input.playerChoice == 0 && input.computerChoice == 2) &&             // Rock vs. Scissors.
-                   (input.playerChoice == 1 && input.computerChoice == 0) &&             // Paper vs. Rock.
+        } else if ((input.playerChoice == 0 && input.computerChoice == 2) ||             // Rock vs. Scissors.
+                   (input.playerChoice == 1 && input.computerChoice == 0) ||             // Paper vs. Rock.
                    (input.playerChoice == 2 && input.computerChoice == 1)) {             // Scissors vs. Paper.
             statistics.win++
         }
 
-        return statistics
+        tvStatistics.text = statistics.toString()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
