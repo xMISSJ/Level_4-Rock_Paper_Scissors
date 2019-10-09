@@ -51,6 +51,7 @@ class MainActivity : AppCompatActivity() {
         return when (id) {
             R.id.action_history -> {
                 val intent = Intent(this@MainActivity, GameHistory::class.java)
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                 startActivity(intent)
                 finish()
                 return true

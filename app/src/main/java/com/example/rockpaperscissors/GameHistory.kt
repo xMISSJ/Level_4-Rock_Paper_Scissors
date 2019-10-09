@@ -1,5 +1,6 @@
 package com.example.rockpaperscissors
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -12,7 +13,7 @@ class GameHistory : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_history)
         val actionBar = supportActionBar
-        actionBar?.setDisplayHomeAsUpEnabled(true)
+        actionBar?.setDisplayHomeAsUpEnabled(true);
 
         supportActionBar?.title = "Your Game History"
     }
@@ -35,5 +36,13 @@ class GameHistory : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val previousIntent = Intent(this@GameHistory, MainActivity::class.java)
+        previousIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(previousIntent)
+        finish()
+        return true
     }
 }
