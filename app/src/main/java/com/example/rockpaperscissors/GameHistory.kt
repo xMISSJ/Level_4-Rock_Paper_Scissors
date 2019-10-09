@@ -40,6 +40,8 @@ class GameHistory : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         val previousIntent = Intent(this@GameHistory, MainActivity::class.java)
+        // If the activity already exists: instead of launching a new instance of this activity, all of the other activities on top of it will be closed.
+        // his Intent will be delivered to the (now on top) old activity as a new Intent.
         previousIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(previousIntent)
         finish()

@@ -27,14 +27,50 @@ class MainActivity : AppCompatActivity() {
         ibScissors.setOnClickListener { onClick(ibScissors) }
     }
 
-    private fun onClick(button: ImageButton) {
+    private fun onClick(button: ImageButton){
         var ivYou = findViewById<ImageView>(R.id.ivPlayer)
+
         when (button) {
-            ibRock -> ivYou.setImageResource(R.drawable.rock)
-            ibPaper -> ivYou.setImageResource(R.drawable.paper)
-            ibScissors -> ivYou.setImageResource(R.drawable.scissors)
+            ibRock -> {
+                // The 0th in the array.
+                ivYou.setImageResource(R.drawable.rock)
+                ivComputer.setImageResource(IMAGES_LIST[random.nextInt(IMAGES_LIST.size)])
+                checkResult(Choice(R.drawable.rock, IMAGES_LIST[random.nextInt(IMAGES_LIST.size)]))
+            }
+            ibPaper -> {
+                // The 1st in the array.
+                ivYou.setImageResource(R.drawable.paper)
+                ivComputer.setImageResource(IMAGES_LIST[random.nextInt(IMAGES_LIST.size)])
+                checkResult(Choice(R.drawable.paper, IMAGES_LIST[random.nextInt(IMAGES_LIST.size)]))
+            }
+            ibScissors -> {
+                // The 2nd in the array.
+                ivYou.setImageResource(R.drawable.scissors)
+                ivComputer.setImageResource(IMAGES_LIST[random.nextInt(IMAGES_LIST.size)])
+                checkResult(Choice(R.drawable.scissors, IMAGES_LIST[random.nextInt(IMAGES_LIST.size)]))
+            }
+            
         }
-        ivComputer.setImageResource(IMAGES_LIST[random.nextInt(IMAGES_LIST.size)])
+    }
+
+    private fun checkResult(input : Choice) : Outcome{
+
+        var statistics = Outcome(0, 0, 0)
+
+        // Same input.
+        if (input.playerChoice == input.computerChoice) {
+            statistics.draw++
+        } else if ((input.playerChoice == 0 && input.computerChoice == 1) &&             // Rock vs. Paper.
+                   (input.playerChoice == 1 && input.computerChoice == 2) &&             // Paper vs. Scissors.
+                   (input.playerChoice == 2 && input.computerChoice == 0)) {             // Scissors vs. Rock.
+            statistics.lose++
+        } else if ((input.playerChoice == 0 && input.computerChoice == 2) &&             // Rock vs. Scissors.
+                   (input.playerChoice == 1 && input.computerChoice == 0) &&             // Paper vs. Rock.
+                   (input.playerChoice == 2 && input.computerChoice == 1)) {             // Scissors vs. Paper.
+            statistics.win++
+        }
+
+        return statistics
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -59,4 +95,7 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    data class Choice (var playerChoice: Int?, var computerChoice: Int?)
+    data class Outcome (var win: Int, var draw: Int, var lose: Int)
 }
