@@ -15,6 +15,7 @@ class GameHistory : AppCompatActivity() {
 
     var gamesList = arrayListOf<Game>()
     var gameAdapter = GameAdapter(gamesList)
+    var winnerDisplay = arrayListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,15 +29,15 @@ class GameHistory : AppCompatActivity() {
     }
 
     private fun initViews(){
-        var winnerDisplay = intent.getStringExtra("WINNERDISPLAY")
+        // intent.get<something>extra for other options.
+        winnerDisplay = intent.getStringArrayListExtra("WINNERDISPLAY_LIST")
 
         rvGames.layoutManager = LinearLayoutManager(this@GameHistory, RecyclerView.VERTICAL, false)
         rvGames.adapter = gameAdapter
         rvGames.addItemDecoration(DividerItemDecoration(this@GameHistory, DividerItemDecoration.VERTICAL))
 
-        // Check whether the winnerDisplay isn't empty.
-        if (winnerDisplay != "") {
-            gamesList.add(Game(winnerDisplay, "Datum", 0, 0))
+        for (i in winnerDisplay.indices) {
+            gamesList.add(Game(winnerDisplay[i], "Datum", 0, 0))
         }
     }
 
@@ -53,9 +54,11 @@ class GameHistory : AppCompatActivity() {
         // as you specify a parent activity in AndroidManifest.xml.
         return when (id) {
             R.id.action_delete -> {
-                Toast.makeText(this, "Delete", Toast.LENGTH_LONG).show()
                 // For future purposes.
                 MainActivity().IMAGES_LIST.clear()
+
+                gamesList.clear()
+                gameAdapter.notifyDataSetChanged()
                 return true
             }
             else -> super.onOptionsItemSelected(item)
