@@ -16,4 +16,6 @@
     <string name="computerWin_text">Computer wins!</string>
     <string name="playerWin_text">You win!</string>
     <string name="delete_history">Delete game history</string>
+    <string name="winner_text">Name wins!</string>
+    <string name="date_text">Date, Time, Timezone</string>
 </resources>

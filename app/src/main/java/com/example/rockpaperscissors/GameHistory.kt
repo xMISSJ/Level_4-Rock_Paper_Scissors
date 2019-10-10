@@ -32,6 +32,8 @@ class GameHistory : AppCompatActivity() {
         return when (id) {
             R.id.action_delete -> {
                 Toast.makeText(this, "Delete", Toast.LENGTH_LONG).show()
+                // For future purposes.
+                MainActivity().IMAGES_LIST.clear()
                 return true
             }
             else -> super.onOptionsItemSelected(item)
