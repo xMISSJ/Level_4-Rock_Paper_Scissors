@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageButton
-import android.widget.ImageView
+import android.widget.Toast
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -14,13 +14,18 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    val IMAGES_LIST = arrayListOf(R.drawable.rock, R.drawable.paper, R.drawable.scissors)
+    val IMAGES_LIST = arrayListOf<Image>((Image("Rock", R.drawable.rock)),
+                                          Image("Paper", R.drawable.paper),
+                                          Image("Scissors", R.drawable.scissors))
     var random = Random()
+    var statistics = Outcome(0, 0, 0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+
+        tvStatistics.text = statistics.toString()
 
         ibRock.setOnClickListener { onClick(ibRock) }
         ibPaper.setOnClickListener { onClick(ibPaper) }
@@ -28,47 +33,49 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onClick(button: ImageButton){
-        var ivYou = findViewById<ImageView>(R.id.ivPlayer)
+
+        var computerChoice = IMAGES_LIST[random.nextInt(IMAGES_LIST.size)]
+        var playerChoice: String
 
         when (button) {
             ibRock -> {
                 // Rock
-                ivYou.setImageResource(IMAGES_LIST[0])
-                ivComputer.setImageResource(IMAGES_LIST[random.nextInt(IMAGES_LIST.size)])
-                checkResult(Choice(IMAGES_LIST[0], IMAGES_LIST[random.nextInt(IMAGES_LIST.size)]))
+                ivPlayer.setImageResource(IMAGES_LIST[0].image)
+                playerChoice = IMAGES_LIST[0].imageid
+                getResult(Choice(playerChoice, computerChoice.imageid))
             }
             ibPaper -> {
                 // Paper
-                ivYou.setImageResource(IMAGES_LIST[1])
-                ivComputer.setImageResource(IMAGES_LIST[random.nextInt(IMAGES_LIST.size)])
-                checkResult(Choice(IMAGES_LIST[1], IMAGES_LIST[random.nextInt(IMAGES_LIST.size)]))
+                ivPlayer.setImageResource(IMAGES_LIST[1].image)
+                playerChoice = IMAGES_LIST[1].imageid
+                getResult(Choice(playerChoice, computerChoice.imageid))
             }
             ibScissors -> {
                 // Scissors
-                ivYou.setImageResource(IMAGES_LIST[2])
-                ivComputer.setImageResource(IMAGES_LIST[random.nextInt(IMAGES_LIST.size)])
-                checkResult(Choice(IMAGES_LIST[2], IMAGES_LIST[random.nextInt(IMAGES_LIST.size)]))
+                ivPlayer.setImageResource(IMAGES_LIST[2].image)
+                playerChoice = IMAGES_LIST[2].imageid
+                getResult(Choice(playerChoice, computerChoice.imageid))
             }
         }
+        ivComputer.setImageResource(computerChoice.image)
     }
 
-    private fun checkResult(input : Choice){
+    private fun getResult(input : Choice){
 
-        var statistics = Outcome(0, 0, 0)
-
-        // Same input.
-        if (input.playerChoice == input.computerChoice) {
-            statistics.draw++
-        } else if ((input.playerChoice == 0 && input.computerChoice == 1) ||             // Rock vs. Paper.
-                   (input.playerChoice == 1 && input.computerChoice == 2) ||             // Paper vs. Scissors.
-                   (input.playerChoice == 2 && input.computerChoice == 0)) {             // Scissors vs. Rock.
-            statistics.lose++
-        } else if ((input.playerChoice == 0 && input.computerChoice == 2) ||             // Rock vs. Scissors.
-                   (input.playerChoice == 1 && input.computerChoice == 0) ||             // Paper vs. Rock.
-                   (input.playerChoice == 2 && input.computerChoice == 1)) {             // Scissors vs. Paper.
+        // Player wins.
+        if ((input.playerChoice == "Rock" && input.computerChoice == "Scissors") ||
+            (input.playerChoice == "Paper" && input.computerChoice == "Rock") ||
+            (input.playerChoice == "Scissors" && input.computerChoice == "Paper")) {
             statistics.win++
+        } else if (input.playerChoice == input.computerChoice) {
+            statistics.draw++
+        } else if ((input.playerChoice == "Rock" && input.computerChoice == "Paper") ||             // Rock vs. Paper.
+                   (input.playerChoice == "Paper" && input.computerChoice == "Scissors") ||             // Paper vs. Scissors.
+                   (input.playerChoice == "Scissors" && input.computerChoice == "Rock")) {             // Scissors vs. Rock.
+            statistics.lose++
+        } else {
+            Toast.makeText(this, "None", Toast.LENGTH_SHORT).show()
         }
-
         tvStatistics.text = statistics.toString()
     }
 
@@ -95,6 +102,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    data class Choice (var playerChoice: Int?, var computerChoice: Int?)
+    data class Choice (var playerChoice: String, var computerChoice: String)
     data class Outcome (var win: Int, var draw: Int, var lose: Int)
+    data class Image (var imageid: String, var image: Int)
 }
