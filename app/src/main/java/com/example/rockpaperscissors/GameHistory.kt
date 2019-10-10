@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +14,8 @@ class GameHistory : AppCompatActivity() {
 
     var gamesList = arrayListOf<Game>()
     var gameAdapter = GameAdapter(gamesList)
-    var winnerDisplay = arrayListOf<String>()
+    var WINNERDISPLAY_LIST = arrayListOf<String>()
+    var DATETIME_LIST = arrayListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,14 +30,15 @@ class GameHistory : AppCompatActivity() {
 
     private fun initViews(){
         // intent.get<something>extra for other options.
-        winnerDisplay = intent.getStringArrayListExtra("WINNERDISPLAY_LIST")
+        WINNERDISPLAY_LIST = intent.getStringArrayListExtra("WINNERDISPLAY_LIST")
+        DATETIME_LIST = intent.getStringArrayListExtra("DATETIME")
 
         rvGames.layoutManager = LinearLayoutManager(this@GameHistory, RecyclerView.VERTICAL, false)
         rvGames.adapter = gameAdapter
         rvGames.addItemDecoration(DividerItemDecoration(this@GameHistory, DividerItemDecoration.VERTICAL))
 
-        for (i in winnerDisplay.indices) {
-            gamesList.add(Game(winnerDisplay[i], "Datum", 0, 0))
+        for (i in WINNERDISPLAY_LIST.indices) {
+            gamesList.add(Game(WINNERDISPLAY_LIST[i], DATETIME_LIST[i], 0, 0))
         }
     }
 

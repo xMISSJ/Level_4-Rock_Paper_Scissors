@@ -1,6 +1,7 @@
 package com.example.rockpaperscissors
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
@@ -9,16 +10,25 @@ import android.widget.ImageButton
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    val IMAGES_LIST = arrayListOf<Image>((Image("Rock", R.drawable.rock)),
-                                          Image("Paper", R.drawable.paper),
-                                          Image("Scissors", R.drawable.scissors))
+    val IMAGES_LIST = arrayListOf((Image("Rock", R.drawable.rock)),
+                                   Image("Paper", R.drawable.paper),
+                                   Image("Scissors", R.drawable.scissors))
     var random = Random()
     var statistics = Outcome(0, 0, 0)
     var WINNERDISPLAY_LIST = arrayListOf<String>()
+    var DATETIME_LIST = arrayListOf<String>()
+    lateinit var currentDateTime: LocalDateTime
+    lateinit var timeZone: ZonedDateTime
+    lateinit var dateTimeFormatter: DateTimeFormatter
+    lateinit var dateTimeValue: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +41,7 @@ class MainActivity : AppCompatActivity() {
         ibRock.setOnClickListener { onClick(ibRock) }
         ibPaper.setOnClickListener { onClick(ibPaper) }
         ibScissors.setOnClickListener { onClick(ibScissors) }
+
     }
 
     private fun onClick(button: ImageButton){
@@ -78,11 +89,13 @@ class MainActivity : AppCompatActivity() {
             statistics.win++
             tvResult.text = getString(R.string.result_text, WIN)
             WINNERDISPLAY_LIST.add(GH_WIN)
+            DATETIME_LIST.add(setDateTime())
         // Draw.
         } else if (input.playerChoice == input.computerChoice) {
             statistics.draw++
             tvResult.text = getString(R.string.result_text, DRAW)
             WINNERDISPLAY_LIST.add(GH_DRAW)
+            DATETIME_LIST.add(setDateTime())
         // Player lost.
         } else if ((input.playerChoice == "Rock" && input.computerChoice == "Paper") ||
                    (input.playerChoice == "Paper" && input.computerChoice == "Scissors") ||
@@ -90,8 +103,19 @@ class MainActivity : AppCompatActivity() {
             statistics.lose++
             getString(R.string.result_text, LOSE)
             WINNERDISPLAY_LIST.add(GH_LOSE)
+            DATETIME_LIST.add(setDateTime())
         }
         tvStatistics.text = getString(R.string.statistics_text, statistics.win, statistics.draw, statistics.lose)
+    }
+
+    private fun setDateTime() : String {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            currentDateTime = LocalDateTime.now()
+            timeZone = ZonedDateTime.of(currentDateTime, ZoneId.of("Europe/Paris"))
+            dateTimeFormatter = DateTimeFormatter.ofPattern("E MMM dd HH:mm:ss ZZZZ yyyy")
+            dateTimeValue =  timeZone.format(dateTimeFormatter)
+            return dateTimeValue
+        } else return "None"
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -108,9 +132,10 @@ class MainActivity : AppCompatActivity() {
         return when (id) {
             R.id.action_history -> {
                 val intent = Intent(this@MainActivity, GameHistory::class.java)
-                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                 // Pass data to next activity.
                 intent.putExtra("WINNERDISPLAY_LIST", WINNERDISPLAY_LIST)
+                intent.putExtra("DATETIME", DATETIME_LIST)
                 startActivity(intent)
                 finish()
                 return true
