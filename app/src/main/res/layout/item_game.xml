@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="165dp"
     android:orientation="vertical">
 
     <TextView
@@ -23,32 +23,35 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/date_text"
+        android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvWinner" />
 
     <ImageView
         android:id="@+id/ivGHComputer"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="70dp"
         android:layout_marginTop="16dp"
         android:background="@color/colorPrimaryDark"
         android:scaleType="centerInside"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.296"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDate"
         app:srcCompat="@drawable/paper" />
 
     <ImageView
         android:id="@+id/ivGHPlayer"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="70dp"
         android:background="@color/colorPrimaryDark"
         android:scaleType="centerInside"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/ivGHComputer"
         app:layout_constraintTop_toBottomOf="@+id/tvDate"
         app:srcCompat="@drawable/rock" />
@@ -79,6 +82,7 @@
         android:id="@+id/tvGHVs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:fontFamily="serif"
         android:text="@string/vs_text"
         android:textSize="26sp"
