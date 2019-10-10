@@ -67,15 +67,15 @@ class MainActivity : AppCompatActivity() {
             (input.playerChoice == "Paper" && input.computerChoice == "Rock") ||
             (input.playerChoice == "Scissors" && input.computerChoice == "Paper")) {
             statistics.win++
+        // Draw.
         } else if (input.playerChoice == input.computerChoice) {
             statistics.draw++
-        } else if ((input.playerChoice == "Rock" && input.computerChoice == "Paper") ||             // Rock vs. Paper.
-                   (input.playerChoice == "Paper" && input.computerChoice == "Scissors") ||             // Paper vs. Scissors.
-                   (input.playerChoice == "Scissors" && input.computerChoice == "Rock")) {             // Scissors vs. Rock.
+        // Player lost.
+        } else if ((input.playerChoice == "Rock" && input.computerChoice == "Paper") ||
+                   (input.playerChoice == "Paper" && input.computerChoice == "Scissors") ||
+                   (input.playerChoice == "Scissors" && input.computerChoice == "Rock")) {
             statistics.lose++
-        } else {
-            Toast.makeText(this, "None", Toast.LENGTH_SHORT).show()
-        }
+        } 
         tvStatistics.text = statistics.toString()
     }
 
