@@ -25,7 +25,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        tvStatistics.text = statistics.toString()
+        tvStatistics.text = getString(R.string.statistics_text, statistics.win, statistics.draw, statistics.lose)
+        tvResult.text = null
 
         ibRock.setOnClickListener { onClick(ibRock) }
         ibPaper.setOnClickListener { onClick(ibPaper) }
@@ -41,42 +42,49 @@ class MainActivity : AppCompatActivity() {
             ibRock -> {
                 // Rock
                 ivPlayer.setImageResource(IMAGES_LIST[0].image)
-                playerChoice = IMAGES_LIST[0].imageid
-                getResult(Choice(playerChoice, computerChoice.imageid))
+                playerChoice = IMAGES_LIST[0].imageId
+                setResult(Choice(playerChoice, computerChoice.imageId))
             }
             ibPaper -> {
                 // Paper
                 ivPlayer.setImageResource(IMAGES_LIST[1].image)
-                playerChoice = IMAGES_LIST[1].imageid
-                getResult(Choice(playerChoice, computerChoice.imageid))
+                playerChoice = IMAGES_LIST[1].imageId
+                setResult(Choice(playerChoice, computerChoice.imageId))
             }
             ibScissors -> {
                 // Scissors
                 ivPlayer.setImageResource(IMAGES_LIST[2].image)
-                playerChoice = IMAGES_LIST[2].imageid
-                getResult(Choice(playerChoice, computerChoice.imageid))
+                playerChoice = IMAGES_LIST[2].imageId
+                setResult(Choice(playerChoice, computerChoice.imageId))
             }
         }
         ivComputer.setImageResource(computerChoice.image)
     }
 
-    private fun getResult(input : Choice){
+    private fun setResult(input : Choice){
+
+        var win = "You win!"
+        var draw = "It's a draw."
+        var lose = "You've lost..."
 
         // Player wins.
         if ((input.playerChoice == "Rock" && input.computerChoice == "Scissors") ||
             (input.playerChoice == "Paper" && input.computerChoice == "Rock") ||
             (input.playerChoice == "Scissors" && input.computerChoice == "Paper")) {
             statistics.win++
+            tvResult.text = getString(R.string.result_text, win)
         // Draw.
         } else if (input.playerChoice == input.computerChoice) {
             statistics.draw++
+            tvResult.text = getString(R.string.result_text, draw)
         // Player lost.
         } else if ((input.playerChoice == "Rock" && input.computerChoice == "Paper") ||
                    (input.playerChoice == "Paper" && input.computerChoice == "Scissors") ||
                    (input.playerChoice == "Scissors" && input.computerChoice == "Rock")) {
             statistics.lose++
-        } 
-        tvStatistics.text = statistics.toString()
+            getString(R.string.result_text, lose)
+        }
+        tvStatistics.text = getString(R.string.statistics_text, statistics.win, statistics.draw, statistics.lose)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -104,5 +112,5 @@ class MainActivity : AppCompatActivity() {
 
     data class Choice (var playerChoice: String, var computerChoice: String)
     data class Outcome (var win: Int, var draw: Int, var lose: Int)
-    data class Image (var imageid: String, var image: Int)
+    data class Image (var imageId: String, var image: Int)
 }

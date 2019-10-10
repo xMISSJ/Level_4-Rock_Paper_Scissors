@@ -5,8 +5,8 @@
     <string name="instructions_text">Instructions: select rock, paper or scissors to play.</string>
     <string name="welcome_text">Welcome</string>
     <string name="statisticsTitle_text">Your all time statistics</string>
-    <string name="statistics_text">Win: %d Draw: %d Lose: %d</string>
-    <string name="result_text">You %s</string>
+    <string name="statistics_text">Win:\u0020%d\u0020\u0020\u0020Draw:\u0020%d\u0020\u0020\u0020Lose:\u0020%d</string>
+    <string name="result_text">%s</string>
     <string name="vs_text">V.S.</string>
     <string name="computer_text">Computer</string>
     <string name="player_text">You</string>
