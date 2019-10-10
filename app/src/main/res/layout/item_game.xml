@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="250dp"
+    android:layout_height="200dp"
     android:orientation="vertical">
 
     <TextView
@@ -26,4 +26,66 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvWinner" />
+
+    <ImageView
+        android:id="@+id/ivGHComputer"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/colorPrimaryDark"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.296"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvDate"
+        app:srcCompat="@drawable/paper" />
+
+    <ImageView
+        android:id="@+id/ivGHPlayer"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/colorPrimaryDark"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toEndOf="@+id/ivGHComputer"
+        app:layout_constraintTop_toBottomOf="@+id/tvDate"
+        app:srcCompat="@drawable/rock" />
+
+    <TextView
+        android:id="@+id/tvGHComputer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/computer_text"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/ivGHComputer"
+        app:layout_constraintStart_toStartOf="@+id/ivGHComputer"
+        app:layout_constraintTop_toBottomOf="@+id/ivGHComputer" />
+
+    <TextView
+        android:id="@+id/tvGHPlayer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/player_text"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/ivGHPlayer"
+        app:layout_constraintStart_toStartOf="@+id/ivGHPlayer"
+        app:layout_constraintTop_toBottomOf="@+id/ivGHPlayer" />
+
+    <TextView
+        android:id="@+id/tvGHVs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="serif"
+        android:text="@string/vs_text"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ivGHPlayer"
+        app:layout_constraintStart_toEndOf="@+id/ivGHComputer"
+        app:layout_constraintTop_toBottomOf="@+id/tvDate"
+        app:layout_constraintVertical_bias="0.16000003" />
 </androidx.constraintlayout.widget.ConstraintLayout>

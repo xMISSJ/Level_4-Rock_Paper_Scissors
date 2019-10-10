@@ -6,16 +6,38 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.activity_game_history.*
 
 class GameHistory : AppCompatActivity() {
+
+    var gamesList = arrayListOf<Game>()
+    var gameAdapter = GameAdapter(gamesList)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_history)
         val actionBar = supportActionBar
-        actionBar?.setDisplayHomeAsUpEnabled(true);
+        actionBar?.setDisplayHomeAsUpEnabled(true)
 
         supportActionBar?.title = "Your Game History"
+
+        initViews()
+    }
+
+    private fun initViews(){
+        var winnerDisplay = intent.getStringExtra("WINNERDISPLAY")
+
+        rvGames.layoutManager = LinearLayoutManager(this@GameHistory, RecyclerView.VERTICAL, false)
+        rvGames.adapter = gameAdapter
+        rvGames.addItemDecoration(DividerItemDecoration(this@GameHistory, DividerItemDecoration.VERTICAL))
+
+        // Check whether the winnerDisplay isn't empty.
+        if (winnerDisplay != "") {
+            gamesList.add(Game(winnerDisplay, "Datum", 0, 0))
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

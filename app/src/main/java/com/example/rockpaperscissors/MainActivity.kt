@@ -6,10 +6,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageButton
-import android.widget.Toast
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.android.synthetic.main.item_game.*
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
                                           Image("Scissors", R.drawable.scissors))
     var random = Random()
     var statistics = Outcome(0, 0, 0)
+    var winnerDisplay: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,26 +64,33 @@ class MainActivity : AppCompatActivity() {
 
     private fun setResult(input : Choice){
 
-        var win = "You win!"
-        var draw = "It's a draw."
-        var lose = "You've lost..."
+        val WIN = "You win!"
+        val DRAW = "It's a draw."
+        val LOSE = "You've lost..."
+
+        val GH_WIN = "Player wins!"
+        val GH_DRAW = "Draw"
+        val GH_LOSE = "Computer wins!"
 
         // Player wins.
         if ((input.playerChoice == "Rock" && input.computerChoice == "Scissors") ||
             (input.playerChoice == "Paper" && input.computerChoice == "Rock") ||
             (input.playerChoice == "Scissors" && input.computerChoice == "Paper")) {
             statistics.win++
-            tvResult.text = getString(R.string.result_text, win)
+            tvResult.text = getString(R.string.result_text, WIN)
+            winnerDisplay = GH_WIN
         // Draw.
         } else if (input.playerChoice == input.computerChoice) {
             statistics.draw++
-            tvResult.text = getString(R.string.result_text, draw)
+            tvResult.text = getString(R.string.result_text, DRAW)
+            winnerDisplay = GH_DRAW
         // Player lost.
         } else if ((input.playerChoice == "Rock" && input.computerChoice == "Paper") ||
                    (input.playerChoice == "Paper" && input.computerChoice == "Scissors") ||
                    (input.playerChoice == "Scissors" && input.computerChoice == "Rock")) {
             statistics.lose++
-            getString(R.string.result_text, lose)
+            getString(R.string.result_text, LOSE)
+            winnerDisplay = GH_LOSE
         }
         tvStatistics.text = getString(R.string.statistics_text, statistics.win, statistics.draw, statistics.lose)
     }
@@ -102,6 +110,8 @@ class MainActivity : AppCompatActivity() {
             R.id.action_history -> {
                 val intent = Intent(this@MainActivity, GameHistory::class.java)
                 intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                // Pass data to next activity.
+                intent.putExtra("WINNERDISPLAY", winnerDisplay)
                 startActivity(intent)
                 finish()
                 return true
