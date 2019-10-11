@@ -8,9 +8,12 @@ import android.view.MenuItem
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.rockpaperscissors.Database.GameRepository
 import kotlinx.android.synthetic.main.activity_game_history.*
 
 class GameHistory : AppCompatActivity() {
+
+    private lateinit var gameRepository: GameRepository
 
     var gamesList = arrayListOf<Game>()
     var gameAdapter = GameAdapter(gamesList)
@@ -28,6 +31,7 @@ class GameHistory : AppCompatActivity() {
 
         supportActionBar?.title = "Your Game History"
 
+        gameRepository = GameRepository(this)
         initViews()
     }
 
