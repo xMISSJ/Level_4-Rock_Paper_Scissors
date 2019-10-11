@@ -5,7 +5,7 @@ import com.example.rockpaperscissors.Game
 
 @Dao
 interface GameDao {
-    @Query("SELECT COUNT(*) FROM game_table")
+    @Query("SELECT * FROM game_table")
     suspend fun getAllGames(): List<Game>
 
     @Insert
@@ -16,4 +16,7 @@ interface GameDao {
 
     @Update
     suspend fun updateGame(game: Game)
+
+    @Query("DELETE FROM game_table")
+    suspend fun deleteAllGames()
 }

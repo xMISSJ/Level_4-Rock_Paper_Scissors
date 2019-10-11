@@ -10,6 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rockpaperscissors.Database.GameRepository
 import kotlinx.android.synthetic.main.activity_game_history.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class GameHistory : AppCompatActivity() {
 
@@ -46,8 +50,28 @@ class GameHistory : AppCompatActivity() {
         rvGames.adapter = gameAdapter
         rvGames.addItemDecoration(DividerItemDecoration(this@GameHistory, DividerItemDecoration.VERTICAL))
 
-        for (i in WINNERDISPLAY_LIST.indices) {
-            gamesList.add(Game(WINNERDISPLAY_LIST[i], DATETIME_LIST[i], PLAYERCHOICE_LIST[i], COMPUTERCHOICE_LIST[i]))
+        CoroutineScope(Dispatchers.Main).launch {
+            withContext(Dispatchers.IO) {
+                for (i in WINNERDISPLAY_LIST.indices) {
+                    //gamesList.add(Game(WINNERDISPLAY_LIST[i], DATETIME_LIST[i], PLAYERCHOICE_LIST[i], COMPUTERCHOICE_LIST[i]))
+                    // This adds the game to the database. This way game history won't be empty when closing the activity.
+                    gameRepository.insertGame(Game(WINNERDISPLAY_LIST[i], DATETIME_LIST[i], PLAYERCHOICE_LIST[i], COMPUTERCHOICE_LIST[i]))
+                }
+                getGamesFromDatabase()
+            }
+        }
+
+        getGamesFromDatabase()
+    }
+
+    private fun getGamesFromDatabase() {
+        CoroutineScope(Dispatchers.Main).launch {
+            val games = withContext(Dispatchers.IO) {
+                gameRepository.getAllGames()
+            }
+            this@GameHistory.gamesList.clear()
+            this@GameHistory.gamesList.addAll(games)
+            this@GameHistory.gameAdapter.notifyDataSetChanged()
         }
     }
 
@@ -64,14 +88,19 @@ class GameHistory : AppCompatActivity() {
         // as you specify a parent activity in AndroidManifest.xml.
         return when (id) {
             R.id.action_delete -> {
-                // For future purposes.
-                MainActivity().IMAGES_LIST.clear()
-
-                gamesList.clear()
-                gameAdapter.notifyDataSetChanged()
+                deleteGameHistory()
                 return true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun deleteGameHistory() {
+        CoroutineScope(Dispatchers.Main).launch {
+            withContext(Dispatchers.IO) {
+                gameRepository.deleteAllGames()
+            }
+            getGamesFromDatabase()
         }
     }
 
