@@ -14,8 +14,11 @@ class GameHistory : AppCompatActivity() {
 
     var gamesList = arrayListOf<Game>()
     var gameAdapter = GameAdapter(gamesList)
+
     var WINNERDISPLAY_LIST = arrayListOf<String>()
     var DATETIME_LIST = arrayListOf<String>()
+    var PLAYERCHOICE_LIST = arrayListOf<Int>()
+    var COMPUTERCHOICE_LIST = arrayListOf<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,14 +34,16 @@ class GameHistory : AppCompatActivity() {
     private fun initViews(){
         // intent.get<something>extra for other options.
         WINNERDISPLAY_LIST = intent.getStringArrayListExtra("WINNERDISPLAY_LIST")
-        DATETIME_LIST = intent.getStringArrayListExtra("DATETIME")
+        DATETIME_LIST = intent.getStringArrayListExtra("DATETIME_LIST")
+        PLAYERCHOICE_LIST = intent.getIntegerArrayListExtra("PLAYERCHOICE_LIST")
+        COMPUTERCHOICE_LIST = intent.getIntegerArrayListExtra("COMPUTERCHOICE_LIST")
 
         rvGames.layoutManager = LinearLayoutManager(this@GameHistory, RecyclerView.VERTICAL, false)
         rvGames.adapter = gameAdapter
         rvGames.addItemDecoration(DividerItemDecoration(this@GameHistory, DividerItemDecoration.VERTICAL))
 
         for (i in WINNERDISPLAY_LIST.indices) {
-            gamesList.add(Game(WINNERDISPLAY_LIST[i], DATETIME_LIST[i], 0, 0))
+            gamesList.add(Game(WINNERDISPLAY_LIST[i], DATETIME_LIST[i], PLAYERCHOICE_LIST[i], COMPUTERCHOICE_LIST[i]))
         }
     }
 

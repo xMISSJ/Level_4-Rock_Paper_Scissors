@@ -21,10 +21,20 @@ class MainActivity : AppCompatActivity() {
     val IMAGES_LIST = arrayListOf((Image("Rock", R.drawable.rock)),
                                    Image("Paper", R.drawable.paper),
                                    Image("Scissors", R.drawable.scissors))
+
     var random = Random()
     var statistics = Outcome(0, 0, 0)
+
     var WINNERDISPLAY_LIST = arrayListOf<String>()
     var DATETIME_LIST = arrayListOf<String>()
+    var PLAYERCHOICE_LIST = arrayListOf<Int>()
+    var COMPUTERCHOICE_LIST = arrayListOf<Int>()
+
+    var playerImageChoice = 0
+    var computerImageChoice = 0
+
+    lateinit var computerTextChoice: String
+
     lateinit var currentDateTime: LocalDateTime
     lateinit var timeZone: ZonedDateTime
     lateinit var dateTimeFormatter: DateTimeFormatter
@@ -46,30 +56,38 @@ class MainActivity : AppCompatActivity() {
 
     private fun onClick(button: ImageButton){
 
-        var computerChoice = IMAGES_LIST[random.nextInt(IMAGES_LIST.size)]
-        var playerChoice: String
+        var randomComputerChoice = IMAGES_LIST[random.nextInt(IMAGES_LIST.size)]
+        var playerTextChoice: String
 
         when (button) {
             ibRock -> {
                 // Rock
                 ivPlayer.setImageResource(IMAGES_LIST[0].image)
-                playerChoice = IMAGES_LIST[0].imageId
-                setResult(Choice(playerChoice, computerChoice.imageId))
+                playerTextChoice = IMAGES_LIST[0].imageId
+                playerImageChoice = IMAGES_LIST[0].image
+                setResult(Choice(playerTextChoice, randomComputerChoice.imageId))
             }
             ibPaper -> {
                 // Paper
                 ivPlayer.setImageResource(IMAGES_LIST[1].image)
-                playerChoice = IMAGES_LIST[1].imageId
-                setResult(Choice(playerChoice, computerChoice.imageId))
+                playerTextChoice = IMAGES_LIST[1].imageId
+                playerImageChoice = IMAGES_LIST[1].image
+                setResult(Choice(playerTextChoice, randomComputerChoice.imageId))
             }
             ibScissors -> {
                 // Scissors
                 ivPlayer.setImageResource(IMAGES_LIST[2].image)
-                playerChoice = IMAGES_LIST[2].imageId
-                setResult(Choice(playerChoice, computerChoice.imageId))
+                playerTextChoice = IMAGES_LIST[2].imageId
+                playerImageChoice = IMAGES_LIST[2].image
+                setResult(Choice(playerTextChoice, randomComputerChoice.imageId))
             }
         }
-        ivComputer.setImageResource(computerChoice.image)
+        ivComputer.setImageResource(randomComputerChoice.image)
+        computerImageChoice = randomComputerChoice.image
+
+        // These two will be used to pass to game history activity.
+        PLAYERCHOICE_LIST.add(playerImageChoice)
+        COMPUTERCHOICE_LIST.add(computerImageChoice)
     }
 
     private fun setResult(input : Choice){
@@ -89,13 +107,11 @@ class MainActivity : AppCompatActivity() {
             statistics.win++
             tvResult.text = getString(R.string.result_text, WIN)
             WINNERDISPLAY_LIST.add(GH_WIN)
-            DATETIME_LIST.add(setDateTime())
         // Draw.
         } else if (input.playerChoice == input.computerChoice) {
             statistics.draw++
             tvResult.text = getString(R.string.result_text, DRAW)
             WINNERDISPLAY_LIST.add(GH_DRAW)
-            DATETIME_LIST.add(setDateTime())
         // Player lost.
         } else if ((input.playerChoice == "Rock" && input.computerChoice == "Paper") ||
                    (input.playerChoice == "Paper" && input.computerChoice == "Scissors") ||
@@ -103,9 +119,9 @@ class MainActivity : AppCompatActivity() {
             statistics.lose++
             getString(R.string.result_text, LOSE)
             WINNERDISPLAY_LIST.add(GH_LOSE)
-            DATETIME_LIST.add(setDateTime())
         }
         tvStatistics.text = getString(R.string.statistics_text, statistics.win, statistics.draw, statistics.lose)
+        DATETIME_LIST.add(setDateTime())
     }
 
     private fun setDateTime() : String {
@@ -135,7 +151,9 @@ class MainActivity : AppCompatActivity() {
                 intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                 // Pass data to next activity.
                 intent.putExtra("WINNERDISPLAY_LIST", WINNERDISPLAY_LIST)
-                intent.putExtra("DATETIME", DATETIME_LIST)
+                intent.putExtra("DATETIME_LIST", DATETIME_LIST)
+                intent.putExtra("COMPUTERCHOICE_LIST", COMPUTERCHOICE_LIST)
+                intent.putExtra("PLAYERCHOICE_LIST", PLAYERCHOICE_LIST)
                 startActivity(intent)
                 finish()
                 return true

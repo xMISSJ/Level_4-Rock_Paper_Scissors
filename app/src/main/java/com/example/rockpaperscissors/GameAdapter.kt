@@ -27,6 +27,8 @@ class GameAdapter(private val games: List<Game>) : RecyclerView.Adapter<GameAdap
             // For each item in the itemView assign their correct values.
             itemView.tvWinner.text = game.winnerText
             itemView.tvDate.text = game.date
+            itemView.ivGHComputer.setImageResource(game.computerImage)
+            itemView.ivGHPlayer.setImageResource(game.playerImage)
         }
     }
 }
