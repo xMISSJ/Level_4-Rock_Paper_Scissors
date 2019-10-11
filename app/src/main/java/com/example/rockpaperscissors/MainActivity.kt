@@ -3,10 +3,13 @@ package com.example.rockpaperscissors
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageButton
+import android.widget.Toast
+import kotlinx.android.parcel.Parcelize
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -25,13 +28,15 @@ class MainActivity : AppCompatActivity() {
     var random = Random()
     var statistics = Outcome(0, 0, 0)
 
-    var WINNERDISPLAY_LIST = arrayListOf<String>()
-    var DATETIME_LIST = arrayListOf<String>()
-    var PLAYERCHOICE_LIST = arrayListOf<Int>()
-    var COMPUTERCHOICE_LIST = arrayListOf<Int>()
+    var winnerDisplayList = arrayListOf<String>()
+    var dateTimeList = arrayListOf<String>()
+    var playerChoiceList = arrayListOf<Int>()
+    var computerChoiceList = arrayListOf<Int>()
+    var statisticsList = arrayListOf<Outcome>()
 
     var playerImageChoice = 0
     var computerImageChoice = 0
+    var round = 0
 
     lateinit var currentDateTime: LocalDateTime
     lateinit var timeZone: ZonedDateTime
@@ -52,6 +57,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onClick(button: ImageButton){
+
+        // Increase round on image click.
+        round++
 
         var randomComputerChoice = IMAGES_LIST[random.nextInt(IMAGES_LIST.size)]
         var playerTextChoice: String
@@ -83,11 +91,14 @@ class MainActivity : AppCompatActivity() {
         computerImageChoice = randomComputerChoice.image
 
         // These two will be used to pass to game history activity.
-        PLAYERCHOICE_LIST.add(playerImageChoice)
-        COMPUTERCHOICE_LIST.add(computerImageChoice)
+        playerChoiceList.add(playerImageChoice)
+        computerChoiceList.add(computerImageChoice)
     }
 
     private fun setResult(input : Choice){
+
+        // Debug purposes.
+        Toast.makeText(this, round.toString(), Toast.LENGTH_SHORT).show()
 
         val WIN = "You win!"
         val DRAW = "It's a draw."
@@ -103,22 +114,22 @@ class MainActivity : AppCompatActivity() {
             (input.playerChoice == "Scissors" && input.computerChoice == "Paper")) {
             statistics.win++
             tvResult.text = getString(R.string.result_text, WIN)
-            WINNERDISPLAY_LIST.add(GH_WIN)
+            winnerDisplayList.add(GH_WIN)
         // Draw.
         } else if (input.playerChoice == input.computerChoice) {
             statistics.draw++
             tvResult.text = getString(R.string.result_text, DRAW)
-            WINNERDISPLAY_LIST.add(GH_DRAW)
+            winnerDisplayList.add(GH_DRAW)
         // Player lost.
         } else if ((input.playerChoice == "Rock" && input.computerChoice == "Paper") ||
                    (input.playerChoice == "Paper" && input.computerChoice == "Scissors") ||
                    (input.playerChoice == "Scissors" && input.computerChoice == "Rock")) {
             statistics.lose++
             tvResult.text = getString(R.string.result_text, LOSE)
-            WINNERDISPLAY_LIST.add(GH_LOSE)
+            winnerDisplayList.add(GH_LOSE)
         }
         tvStatistics.text = getString(R.string.statistics_text, statistics.win, statistics.draw, statistics.lose)
-        DATETIME_LIST.add(setDateTime())
+        dateTimeList.add(setDateTime())
     }
 
     private fun setDateTime() : String {
@@ -147,10 +158,10 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this@MainActivity, GameHistory::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                 // Pass data to next activity.
-                intent.putExtra("WINNERDISPLAY_LIST", WINNERDISPLAY_LIST)
-                intent.putExtra("DATETIME_LIST", DATETIME_LIST)
-                intent.putExtra("COMPUTERCHOICE_LIST", COMPUTERCHOICE_LIST)
-                intent.putExtra("PLAYERCHOICE_LIST", PLAYERCHOICE_LIST)
+                intent.putExtra("winnerDisplayList", winnerDisplayList)
+                intent.putExtra("dateTimeList", dateTimeList)
+                intent.putExtra("computerChoiceList", computerChoiceList)
+                intent.putExtra("playerChoiceList", playerChoiceList)
                 startActivity(intent)
                 finish()
                 return true
@@ -160,6 +171,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     data class Choice (var playerChoice: String, var computerChoice: String)
-    data class Outcome (var win: Int, var draw: Int, var lose: Int)
+    @Parcelize data class Outcome (var win: Int, var draw: Int, var lose: Int): Parcelable
     data class Image (var imageId: String, var image: Int)
 }

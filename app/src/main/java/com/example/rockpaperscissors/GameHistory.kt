@@ -22,10 +22,10 @@ class GameHistory : AppCompatActivity() {
     var gamesList = arrayListOf<Game>()
     var gameAdapter = GameAdapter(gamesList)
 
-    var WINNERDISPLAY_LIST = arrayListOf<String>()
-    var DATETIME_LIST = arrayListOf<String>()
-    var PLAYERCHOICE_LIST = arrayListOf<Int>()
-    var COMPUTERCHOICE_LIST = arrayListOf<Int>()
+    var winnderDisplayList = arrayListOf<String>()
+    var dateTimeList = arrayListOf<String>()
+    var playerChoiceList = arrayListOf<Int>()
+    var computerChoiceList = arrayListOf<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,10 +41,10 @@ class GameHistory : AppCompatActivity() {
 
     private fun initViews(){
         // intent.get<something>extra for other options.
-        WINNERDISPLAY_LIST = intent.getStringArrayListExtra("WINNERDISPLAY_LIST")
-        DATETIME_LIST = intent.getStringArrayListExtra("DATETIME_LIST")
-        PLAYERCHOICE_LIST = intent.getIntegerArrayListExtra("PLAYERCHOICE_LIST")
-        COMPUTERCHOICE_LIST = intent.getIntegerArrayListExtra("COMPUTERCHOICE_LIST")
+        winnderDisplayList = intent.getStringArrayListExtra("winnerDisplayList")
+        dateTimeList = intent.getStringArrayListExtra("dateTimeList")
+        playerChoiceList = intent.getIntegerArrayListExtra("playerChoiceList")
+        computerChoiceList = intent.getIntegerArrayListExtra("computerChoiceList")
 
         rvGames.layoutManager = LinearLayoutManager(this@GameHistory, RecyclerView.VERTICAL, false)
         rvGames.adapter = gameAdapter
@@ -52,10 +52,10 @@ class GameHistory : AppCompatActivity() {
 
         CoroutineScope(Dispatchers.Main).launch {
             withContext(Dispatchers.IO) {
-                for (i in WINNERDISPLAY_LIST.indices) {
-                    //gamesList.add(Game(WINNERDISPLAY_LIST[i], DATETIME_LIST[i], PLAYERCHOICE_LIST[i], COMPUTERCHOICE_LIST[i]))
+                for (i in winnderDisplayList.indices) {
+                    //gamesList.add(Game(winnerDisplayList[i], dateTimeList[i], playerChoiceList[i], computerChoiceList[i]))
                     // This adds the game to the database. This way game history won't be empty when closing the activity.
-                    gameRepository.insertGame(Game(WINNERDISPLAY_LIST[i], DATETIME_LIST[i], PLAYERCHOICE_LIST[i], COMPUTERCHOICE_LIST[i]))
+                    gameRepository.insertGame(Game(winnderDisplayList[i], dateTimeList[i], playerChoiceList[i], computerChoiceList[i]))
                 }
                 getGamesFromDatabase()
             }
