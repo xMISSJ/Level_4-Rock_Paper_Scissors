@@ -33,8 +33,6 @@ class MainActivity : AppCompatActivity() {
     var playerImageChoice = 0
     var computerImageChoice = 0
 
-    lateinit var computerTextChoice: String
-
     lateinit var currentDateTime: LocalDateTime
     lateinit var timeZone: ZonedDateTime
     lateinit var dateTimeFormatter: DateTimeFormatter
@@ -51,7 +49,6 @@ class MainActivity : AppCompatActivity() {
         ibRock.setOnClickListener { onClick(ibRock) }
         ibPaper.setOnClickListener { onClick(ibPaper) }
         ibScissors.setOnClickListener { onClick(ibScissors) }
-
     }
 
     private fun onClick(button: ImageButton){
