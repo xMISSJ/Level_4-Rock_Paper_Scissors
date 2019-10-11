@@ -114,7 +114,7 @@ class MainActivity : AppCompatActivity() {
                    (input.playerChoice == "Paper" && input.computerChoice == "Scissors") ||
                    (input.playerChoice == "Scissors" && input.computerChoice == "Rock")) {
             statistics.lose++
-            getString(R.string.result_text, LOSE)
+            tvResult.text = getString(R.string.result_text, LOSE)
             WINNERDISPLAY_LIST.add(GH_LOSE)
         }
         tvStatistics.text = getString(R.string.statistics_text, statistics.win, statistics.draw, statistics.lose)
