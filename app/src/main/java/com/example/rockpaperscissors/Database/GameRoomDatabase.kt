@@ -6,12 +6,19 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.rockpaperscissors.Game
 
+/*
+ * Puts together the entities and DAO('s).
+ */
+
+// Define what entities to store in our database.
 @Database(entities = [Game::class], version = 1, exportSchema = false)
 
 abstract class GameRoomDatabase : RoomDatabase() {
 
+    // Abstract method to get the implementation room makes.
     abstract fun gameDao(): GameDao
 
+    // We want the database to be static.
     companion object {
         private const val DATABASE_NAME = "GAME_DATABASE"
 
@@ -27,7 +34,7 @@ abstract class GameRoomDatabase : RoomDatabase() {
                             context.applicationContext,
                             GameRoomDatabase::class.java,
                             DATABASE_NAME
-                        ).allowMainThreadQueries().build()
+                        ).build()
                     }
                 }
             }
