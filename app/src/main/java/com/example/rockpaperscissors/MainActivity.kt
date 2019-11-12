@@ -25,14 +25,13 @@ class MainActivity : AppCompatActivity() {
                                    Image("Paper", R.drawable.paper),
                                    Image("Scissors", R.drawable.scissors))
 
-    var random = Random()
-    var statistics = Outcome(0, 0, 0)
+    private var random = Random()
+    private var statistics = Outcome(0, 0, 0)
 
     var winnerDisplayList = arrayListOf<String>()
     var dateTimeList = arrayListOf<String>()
     var playerChoiceList = arrayListOf<Int>()
     var computerChoiceList = arrayListOf<Int>()
-    var statisticsList = arrayListOf<Outcome>()
 
     var playerImageChoice = 0
     var computerImageChoice = 0
@@ -98,7 +97,7 @@ class MainActivity : AppCompatActivity() {
     private fun setResult(input : Choice){
 
         // Debug purposes.
-        Toast.makeText(this, round.toString(), Toast.LENGTH_SHORT).show()
+        //Toast.makeText(this, round.toString(), Toast.LENGTH_SHORT).show()
 
         val WIN = "You win!"
         val DRAW = "It's a draw."
@@ -162,6 +161,7 @@ class MainActivity : AppCompatActivity() {
                 intent.putExtra("dateTimeList", dateTimeList)
                 intent.putExtra("computerChoiceList", computerChoiceList)
                 intent.putExtra("playerChoiceList", playerChoiceList)
+                intent.putExtra("statistics", statistics)
                 startActivity(intent)
                 finish()
                 return true

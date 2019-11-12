@@ -1,12 +1,9 @@
 package com.example.rockpaperscissors
 
-import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.android.parcel.Parcelize
 
-@Parcelize
 @Entity(tableName = "game_table")
 data class Game (
 
@@ -19,4 +16,6 @@ data class Game (
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     var id: Long? = null
-) : Parcelable
+)
+
+// How is the game result stored in the database.

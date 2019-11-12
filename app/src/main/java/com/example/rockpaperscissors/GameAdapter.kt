@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_game.view.*
 
+// Adapter is a bridge between UI component and data source which helps us fill in data in the UI component.
 class GameAdapter(private val games: List<Game>) : RecyclerView.Adapter<GameAdapter.ViewHolder>() {
 
     // Creates and returns a ViewHolder object, inflating a standard layout called simple_list_item_1.

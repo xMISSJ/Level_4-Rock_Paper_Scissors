@@ -11,6 +11,7 @@ import com.example.rockpaperscissors.Game
  */
 
 // Define what entities to store in our database.
+
 @Database(entities = [Game::class], version = 1, exportSchema = false)
 
 abstract class GameRoomDatabase : RoomDatabase() {

@@ -20,10 +20,10 @@ class GameHistory : AppCompatActivity() {
     private lateinit var gameRepository: GameRepository
 
     var gamesList = arrayListOf<Game>()
-    var gameAdapter = GameAdapter(gamesList)
+    private var gameAdapter = GameAdapter(gamesList)
 
-    var winnderDisplayList = arrayListOf<String>()
-    var dateTimeList = arrayListOf<String>()
+    private var winnerDisplayList = arrayListOf<String>()
+    private var dateTimeList = arrayListOf<String>()
     var playerChoiceList = arrayListOf<Int>()
     var computerChoiceList = arrayListOf<Int>()
 
@@ -41,7 +41,7 @@ class GameHistory : AppCompatActivity() {
 
     private fun initViews(){
         // intent.get<something>extra for other options.
-        winnderDisplayList = intent.getStringArrayListExtra("winnerDisplayList")
+        winnerDisplayList = intent.getStringArrayListExtra("winnerDisplayList")
         dateTimeList = intent.getStringArrayListExtra("dateTimeList")
         playerChoiceList = intent.getIntegerArrayListExtra("playerChoiceList")
         computerChoiceList = intent.getIntegerArrayListExtra("computerChoiceList")
@@ -52,10 +52,10 @@ class GameHistory : AppCompatActivity() {
 
         CoroutineScope(Dispatchers.Main).launch {
             withContext(Dispatchers.IO) {
-                for (i in winnderDisplayList.indices) {
+                for (i in winnerDisplayList.indices) {
                     //gamesList.add(Game(winnerDisplayList[i], dateTimeList[i], playerChoiceList[i], computerChoiceList[i]))
                     // This adds the game to the database. This way game history won't be empty when closing the activity.
-                    gameRepository.insertGame(Game(winnderDisplayList[i], dateTimeList[i], playerChoiceList[i], computerChoiceList[i]))
+                    gameRepository.insertGame(Game(winnerDisplayList[i], dateTimeList[i], playerChoiceList[i], computerChoiceList[i]))
                 }
                 getGamesFromDatabase()
             }

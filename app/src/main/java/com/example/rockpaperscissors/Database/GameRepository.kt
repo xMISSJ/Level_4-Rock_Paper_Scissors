@@ -16,10 +16,6 @@ class GameRepository(context: Context) {
 
     suspend fun insertGame(game: Game) = gameDao.insertGame(game)
 
-    suspend fun deleteGame(game: Game) = gameDao.deleteGame(game)
-
-    suspend fun updateGame(game: Game) = gameDao.updateGame(game)
-
     suspend fun deleteAllGames() = gameDao.deleteAllGames()
 
 }
